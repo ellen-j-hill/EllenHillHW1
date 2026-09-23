@@ -6,16 +6,35 @@ public static void main (String[] args){
     Random rand = new Random();
 
     int[] dice = {0,0,0,0,0,0};
-    for (int i = 0; i<6; i++){
-        System. out.println(i);
-        
-        dice[i] = (rand.nextInt(5)+1);
-        System. out.println("Placed " + dice[i] + " at " + i);
-    }
-    //int randomInRange = (rand.nextInt%6)+1;
+        for (int i = 0; i<6; i++){       
+            dice[i] = (rand.nextInt(5)+1);
+            System. out.println("Placed " + dice[i] + " at " + i);
+        }
+    //Testing Hand with known values
+    /*    int[] testhand = {1, 5, 5, 3, 4, 5};
+        for (int i = 0; i < 6; i++){
+                dice[i] = testhand[i];
+        }
+    */
+
+    //Sort the Hand
+    for (int i = 0; i<6; i++){  
+        for (int j = 0; j < 6- i - 1; j++) {
+            if (dice[j] > dice[j+1]){
+                int temp = dice[j];
+                dice[j] = dice[j+1];
+                dice[j+1] = temp; 
+                }
+            }
+        }
+
+    //Reviewing Test /*
+     for (int i = 0; i<6; i++){       
+        System. out.println(dice[i] + " is at position " + i);
+        }
     }
 }
-
+    //*/
 /*
     int age = 30;
     float price = 10.99F; //Suffix is "F" to ensure that it is a float
