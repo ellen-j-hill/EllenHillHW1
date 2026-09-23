@@ -1,11 +1,16 @@
+import java.util.Random;
+
 public class Main{
 public static void main (String[] args){
     System. out.println("Farkle Rolling & Scoring in Java!");
+    Random rand = new Random();
 
     int[] dice = {0,0,0,0,0,0};
-    for (int i = 1; i<=6; i++){
+    for (int i = 0; i<6; i++){
         System. out.println(i);
-        System. out.println("successful run!");
+        
+        dice[i] = (rand.nextInt(5)+1);
+        System. out.println("Placed " + dice[i] + " at " + i);
     }
     //int randomInRange = (rand.nextInt%6)+1;
     }
