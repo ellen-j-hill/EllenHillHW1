@@ -7,15 +7,16 @@ public static void main (String[] args){
 
     int[] dice = {0,0,0,0,0,0};
         for (int i = 0; i<6; i++){       
-            dice[i] = (rand.nextInt(5)+1);
-            System. out.println("Placed " + dice[i] + " at " + i);
+            dice[i] = (rand.nextInt(6)+1);
+        //    System. out.println("Placed " + dice[i] + " at " + i);
         }
     //Testing Hand with known values
-    /*    int[] testhand = {1, 5, 5, 3, 4, 5};
+    
+        int[] testhand = {1, 5, 5, 3, 4, 5};
         for (int i = 0; i < 6; i++){
                 dice[i] = testhand[i];
         }
-    */
+    //*/
 
     //Sort the Hand
     for (int i = 0; i<6; i++){  
@@ -28,13 +29,30 @@ public static void main (String[] args){
             }
         }
 
-    //Reviewing Test /*
-     for (int i = 0; i<6; i++){       
-        System. out.println(dice[i] + " is at position " + i);
+    // Print the Hand
+    System. out.print("Hand: ");
+        for (int i = 0; i<6; i++){       
+        System. out.print(dice[i] + " ");
         }
+    System. out.println(" ");
+
+
+    // Begin Calcualting Score
+    int[] diceNumberCount = {0,0,0,0,0,0,0};
+        for (int i = 0; i < 6; i++){
+                diceNumberCount[dice[i]]++; 
+        }
+    
+    System. out.println("Quantity of each die value: ");
+        for( int i = 1; i < 7; i++){
+            System. out.println(i + ": "+ diceNumberCount[i] + " ");
+        }
+
+
+
     }
 }
-    //*/
+
 /*
     int age = 30;
     float price = 10.99F; //Suffix is "F" to ensure that it is a float
