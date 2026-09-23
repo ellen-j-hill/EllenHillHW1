@@ -37,17 +37,31 @@ public static void main (String[] args){
     System. out.println(" ");
 
 
-    // Begin Calcualting Score
-    int[] diceNumberCount = {0,0,0,0,0,0,0};
+    // Count Number Values
+        int[] diceNumberCount = {0,0,0,0,0,0,0};
         for (int i = 0; i < 6; i++){
                 diceNumberCount[dice[i]]++; 
         }
     
-    System. out.println("Quantity of each die value: ");
+        System. out.println("Quantity of each die value: ");
         for( int i = 1; i < 7; i++){
             System. out.println(i + ": "+ diceNumberCount[i] + " ");
         }
+        System. out.println(" ");
 
+    //Check for Farkle!
+        boolean isFarkle = true;
+        if (diceNumberCount[1] !=0 || diceNumberCount[5] !=0){
+            isFarkle = false;
+        }
+
+        for (int i = 2; i < 7; i++){
+            if(diceNumberCount[i] >= 3){
+                isFarkle = false;
+            }
+        }
+
+    //Checking for Pairs!
 
 
     }
