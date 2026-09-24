@@ -62,29 +62,112 @@ public static void main (String[] args){
         }
 
     //Checking for Pairs!
+        int pairCount = 0;
+        for ( int i = 1; i < 7; i++){
+            if (diceNumberCount[i] == 2){
+                pairCount++;
+            }
+        }
+        if(pairCount==3){
+            isFarkle = false;
+        }
 
+        int totalScore = 0;
+        if (isFarkle){
+            System.out.println("Farkle! Points: 0");
+        }else{
+            String userInput = "";
+            int meldScore = 0;
+            int[] meld = {0,0,0,0,0,0};
+            boolean done = false;
 
+            //while (!done){
+            for (int i = 1; i <2; i++){
+                //Print Status
+                System.out.println("");
+                System.out.println("*************************** Current hand and meld *******************");
+                System.out.println(" Die   Hand |   Meld");
+                System.out.println("------------+---------------");
+
+                for(int i =0; i<6; i++){
+                    char blank = 'A'; 
+                    System.out.println(" (" + option + " " + i +") ");
+                    if (dice[i] !=0){
+                        System.out.print("dice[i]");
+                    }else{System.out.print(" ");}
+                    
+                    System.out.print("   |     ");
+                    if(meld[i] != 0){
+                        System.out.print("meld[i]");
+                    }else{System.out.print(" ");}
+                    System.out.print("");
+                }
+                System.out.println("");
+            }
+            System.out.println("------------+---------------");
+            boolean isValidMeld = false; 
+            //calculate the Meld
+                meldScore = 0; //Reset each time user changes meld
+                int meldDiceCount = 0;
+                int[] meldDice = {0,0,0,0,0,0};
+                for(int i=0; i < 6; i++){
+                    if(meld[i] != 0){
+                        meldDice[meldDiceCount] = meld[i];
+                        meldDiceCount++;
+                    }
+                }
+                
+                int[] meldDiceSizesCount = {0,0,0,0,0,0,0};
+                for(int i = 0; i < 6; i++) {
+                    meldDiceSizesCount[meldDice[i]]++;
+                }
+
+                //Checking for Straight!
+
+                boolean isStraight = true;
+                for( int i = 1; i <7; i++){
+                    if(meldDiceSizesCount[i] !=1){
+                        isStraight=false; 
+                    }
+                }
+                if(isStraight){
+                    meldScore+=1000;
+                }else{
+                    int pairsCounter = 0;
+                    for(int i = 1; i <7; i++){
+                        if(meldDiceSizesCount[i] ==2){
+                            pairsCounter++;
+                        }
+                    }
+                if(pairsCounter==3){
+                    //Check 3 Pairs
+                        meldScore += 750; 
+                }else{
+                    //Check for Triples!
+                    Boolean isTriple = false;
+                    for(int i = 1; i < 7; i++){
+                        if(meldDiceSizesCount[i] >=3){
+                            isTriple = true;
+                        int tripleSetPoints=0;
+                        if(i ==1) {
+                            tripleSetPoints=1000;
+                        }else{
+                            tripleSetPoints = i * 100;
+                        }
+                        if (meldDiceSizesCount[i]>3){
+                            tripleSetPoints += (meldDiceSizesCount[i]-3) *100 * 1;
+                        }
+                        meldScore+= tripleSetPoints;
+                    }
+                }
+                // Add 1s and 5s if unused
+                if (meldDiceSizesCount[1] < 3){
+                    meldScore += meldDiceSizesCount[1] * 100;
+                    }
+                if (meldDiceSizesCount[5]<3){
+                    meldScore += meldDiceSizesCount[5] * 50;
+                    }
+                }              
+            }      
+        }
     }
-}
-
-/*
-    int age = 30;
-    float price = 10.99F; //Suffix is "F" to ensure that it is a float
-    char letter = 'a'; // Suffix is to use single quotes, and double quotes are for strings
-    System. out.println(age);
-    System. out.println(price);
-    System. out.println(letter);
-
-// Escape Sequences
-System.out.println("\tIt's a \"beautiful\" day");
-
-// Arrays
-int[] myNum = {10,20,30,40};
-// Array Indexes start at 0, and 1 is the second element
-System.out.println(myNum[0]);
-
-//Multidimensional arrays!
-int[] [] myNums = {{1,2},{3,4,5},{6,7,8,9}};
-System.out.println(myNums[0][0]);
-System.out.println(myNums[1][2]);
-}*/
