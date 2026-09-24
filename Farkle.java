@@ -1,9 +1,11 @@
 import java.util.Random;
+import java.util.Scanner;
 
 public class Main{
 public static void main (String[] args){
     System. out.println("Farkle Rolling & Scoring in Java!");
     Random rand = new Random();
+    Scanner scanner = new Scanner(System.in);
 
     int[] dice = {0,0,0,0,0,0};
         for (int i = 0; i<6; i++){       
@@ -47,7 +49,6 @@ public static void main (String[] args){
         for( int i = 1; i < 7; i++){
             System. out.println(i + ": "+ diceNumberCount[i] + " ");
         }
-        System. out.println(" ");
 
     //Check for Farkle!
         boolean isFarkle = true;
@@ -72,17 +73,17 @@ public static void main (String[] args){
             isFarkle = false;
         }
 
+// Calculating Score!
         int totalScore = 0;
         if (isFarkle){
             System.out.println("Farkle! Points: 0");
         }else{
-            String userInput = "";
+            String input = "";
             int meldScore = 0;
             int[] meld = {0,0,0,0,0,0};
             boolean done = false;
 
-            //while (!done){
-            for (int i = 1; i <2; i++){
+            while (done==false){
                 //Print Status
                 System.out.println("");
                 System.out.println("*************************** Current hand and meld *******************");
@@ -90,20 +91,18 @@ public static void main (String[] args){
                 System.out.println("------------+---------------");
 
                 for(int i =0; i<6; i++){
-                    char blank = 'A'; 
-                    System.out.println(" (" + option + " " + i +") ");
+                    char option = (char) ('A' + i); 
+                    System.out.print(" (" + option + ") ");
                     if (dice[i] !=0){
-                        System.out.print("dice[i]");
+                        System.out.print(dice[i]);
                     }else{System.out.print(" ");}
                     
                     System.out.print("   |     ");
                     if(meld[i] != 0){
-                        System.out.print("meld[i]");
+                        System.out.print(meld[i]);
                     }else{System.out.print(" ");}
-                    System.out.print("");
+                    System.out.println("");
                 }
-                System.out.println("");
-            }
             System.out.println("------------+---------------");
             boolean isValidMeld = false; 
             //calculate the Meld
@@ -130,7 +129,7 @@ public static void main (String[] args){
                         isStraight=false; 
                     }
                 }
-                if(isStraight){
+                if(isStraight == true){
                     meldScore+=1000;
                 }else{
                     int pairsCounter = 0;
@@ -139,8 +138,9 @@ public static void main (String[] args){
                             pairsCounter++;
                         }
                     }
+
+                //Checking for 3 Pairs
                 if(pairsCounter==3){
-                    //Check 3 Pairs
                         meldScore += 750; 
                 }else{
                     //Check for Triples!
@@ -148,26 +148,59 @@ public static void main (String[] args){
                     for(int i = 1; i < 7; i++){
                         if(meldDiceSizesCount[i] >=3){
                             isTriple = true;
-                        int tripleSetPoints=0;
-                        if(i ==1) {
-                            tripleSetPoints=1000;
-                        }else{
-                            tripleSetPoints = i * 100;
+                            int tripleSetPoints=0;
+                            if(i ==1) {
+                                tripleSetPoints=1000;
+                            }else{
+                                tripleSetPoints = (i * 100);
+                            }
+                            if (meldDiceSizesCount[i]>3){
+                                tripleSetPoints += (meldDiceSizesCount[i]-3) *100 * 1;
+                            }
+                        meldScore += tripleSetPoints;
                         }
-                        if (meldDiceSizesCount[i]>3){
-                            tripleSetPoints += (meldDiceSizesCount[i]-3) *100 * 1;
-                        }
-                        meldScore+= tripleSetPoints;
                     }
                 }
                 // Add 1s and 5s if unused
                 if (meldDiceSizesCount[1] < 3){
                     meldScore += meldDiceSizesCount[1] * 100;
-                    }
+                }
                 if (meldDiceSizesCount[5]<3){
                     meldScore += meldDiceSizesCount[5] * 50;
-                    }
-                }              
-            }      
+                }
+            }                 
+    
+    System.out.println("                Meld Score: " + meldScore);
+    System.out.println("");
+    System.out.println("(K) Bank Meld & End Round");
+    System.out.println("(Q) Quit Game");
+    System.out.println("");
+    System.out.println("Enter letters for your choice(s)");
+
+        input = scanner.nextLine();
+        for (int i = 0; i < input.length(); i++){
+            char letter = Character.toUpperCase(input.charAt(i));
+            
+            if( letter >= 'A' && letter <='F'){
+                int index = letter - 'A';
+                if(dice[index] != 0){
+                    meld[index] = dice[index];
+                    dice[index] = 0;
+                } else {
+                    dice[index] = meld[index];
+                    meld[index] = 0; 
+                }
+            } else if (letter == 'Q'){
+                done = true;
+            } else if (letter == 'K'){
+                done = true;
+                totalScore += meldScore;
+            }
         }
     }
+}
+    System.out.println();
+    System.out.println("Round over. Total score is now: " + totalScore);
+    System.out.println();
+}
+}
