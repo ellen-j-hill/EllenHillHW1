@@ -12,13 +12,6 @@ public static void main (String[] args){
             dice[i] = (rand.nextInt(6)+1);
         //    System. out.println("Placed " + dice[i] + " at " + i);
         }
-    //Testing Hand with known values
-    
-        int[] testhand = {1, 5, 5, 3, 4, 5};
-        for (int i = 0; i < 6; i++){
-                dice[i] = testhand[i];
-        }
-    //*/
 
     //Sort the Hand
     for (int i = 0; i<6; i++){  
