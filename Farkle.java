@@ -3,7 +3,8 @@ import java.util.Scanner;
 
 public class Main{
 public static void main (String[] args){
-    System. out.println("Farkle Rolling & Scoring in Java!");
+    printGameStart();
+    //System. out.println("Farkle Rolling & Scoring in Java!");
     Random rand = new Random();
     Scanner scanner = new Scanner(System.in);
 
@@ -196,4 +197,13 @@ public static void main (String[] args){
     System.out.println("Round over. Total score is now: " + totalScore);
     System.out.println();
 }
+
+
+public static void printGameStart (){
+    System.out.println("************************************************************************");
+    System.out.println("*                     Zag Farkle by Ellen Hill!                        *");
+    System.out.println("*                         Copyright: 2026                              *");
+    System.out.println("************************************************************************");
+    System.out.println();
+    }
 }
