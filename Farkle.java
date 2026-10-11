@@ -14,12 +14,17 @@ import java.util.Scanner;
 public class Main{
     public static void main (String[] args){
         printGameStart();
-        // String userName = getUserName();
+        String userName = getUserName();
         Random rand = new Random();
         Scanner scanner = new Scanner(System.in);
 
         // Declare rounds
         int numRounds = 1;
+        int totalScore = 0;
+        Boolean playingGame = true;
+
+        while (playingGame){
+        // Making Dice
         int[] dice = {0,0,0,0,0,0};
             for (int i = 0; i<6; i++){       
                 dice[i] = (rand.nextInt(6)+1);
@@ -43,6 +48,7 @@ public class Main{
                 }
             }
 
+
         // Print the Hand
         System. out.print("Hand: ");
             for (int i = 0; i<6; i++){       
@@ -56,7 +62,7 @@ public class Main{
             for (int i = 0; i < 6; i++){
                     diceNumberCount[dice[i]]++; 
             }
-        
+
             System. out.println("Quantity of each die value: ");
             for( int i = 1; i < 7; i++){
                 System. out.println(i + ": "+ diceNumberCount[i] + " ");
@@ -86,7 +92,7 @@ public class Main{
             }
 
     // Calculating Score!
-            int totalScore = 0;
+  
             if (isFarkle){
                 System.out.println("Farkle! Points: 0");
             }else{
@@ -203,19 +209,24 @@ public class Main{
                         meld[index] = 0; 
                     }
                 } else if (letter == 'Q'){
+                    System.out.println();
                     System.out.println("Thank you for playing for " + numRounds + " rounds!");
+                    System.out.println("Game over. Your final score is: " + totalScore);
+                    System.out.println();
                     done = true;
+                    playingGame = false;
                 } else if (letter == 'K'){
                     numRounds++;
                     done = true;
                     totalScore += meldScore;
+                    System.out.println();
+                    System.out.println("Round over. Your score is currently: " + totalScore);
+                    System.out.println();
                 }
             }
         }
     }
-        System.out.println();
-        System.out.println("Round over. Total score is now: " + totalScore);
-        System.out.println();
+        }
     }
 
 
