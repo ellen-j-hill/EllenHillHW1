@@ -24,6 +24,12 @@ public class Main{
             //    System. out.println("Placed " + dice[i] + " at " + i);
             }
 
+        //Testing hand with known values
+        int[] testHand = { 1, 5, 5, 3, 4, 5};
+        for( int i = 0; i < 6; i++ ) {
+          dice[i] = testHand[i];
+        }
+
         //Sort the Hand
         for (int i = 0; i<6; i++){  
             for (int j = 0; j < 6- i - 1; j++) {
