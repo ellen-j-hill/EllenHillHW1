@@ -14,10 +14,12 @@ import java.util.Scanner;
 public class Main{
     public static void main (String[] args){
         printGameStart();
-        String userName = getUserName();
+        // String userName = getUserName();
         Random rand = new Random();
         Scanner scanner = new Scanner(System.in);
 
+        // Declare rounds
+        int numRounds = 1;
         int[] dice = {0,0,0,0,0,0};
             for (int i = 0; i<6; i++){       
                 dice[i] = (rand.nextInt(6)+1);
@@ -96,9 +98,9 @@ public class Main{
                 while (done==false){
                     //Print Status
                     System.out.println("");
-                    System.out.println("*************************** Current hand and meld *******************");
+                    System.out.println("************** Round " + numRounds + " : Current hand and Meld **********");
                     System.out.println(" Die   Hand |   Meld");
-                    System.out.println("------------+---------------");
+                    System.out.println("---------------+---------------");
 
                     for(int i =0; i<6; i++){
                         char option = (char) ('A' + i); 
@@ -113,7 +115,7 @@ public class Main{
                         }else{System.out.print(" ");}
                         System.out.println("");
                     }
-                System.out.println("------------+---------------");
+                System.out.println("---------------+---------------");
                 boolean isValidMeld = false; 
                 //calculate the Meld
                     meldScore = 0; //Reset each time user changes meld
@@ -201,8 +203,10 @@ public class Main{
                         meld[index] = 0; 
                     }
                 } else if (letter == 'Q'){
+                    System.out.println("Thank you for playing for " + numRounds + " rounds!");
                     done = true;
                 } else if (letter == 'K'){
+                    numRounds++;
                     done = true;
                     totalScore += meldScore;
                 }
