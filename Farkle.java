@@ -104,7 +104,8 @@ public class Main{
                 while (done==false){
                     //Print Status
                     System.out.println("");
-                    System.out.println("************** Round " + numRounds + " : Current hand and Meld **********");
+                    System.out.println("******************** Round " + numRounds + " : " + userName + "'s Turn! ********************");
+                    System.out.println("******************** Current Hand and Meld ********************");
                     System.out.println(" Die   Hand |   Meld");
                     System.out.println("---------------+---------------");
 
@@ -188,7 +189,7 @@ public class Main{
                     }
                 }                 
         
-        System.out.println("                Meld Score: " + meldScore);
+        System.out.println("         Meld Score: " + meldScore);
         System.out.println("");
         System.out.println("(K) Bank Meld & End Round");
         System.out.println("(Q) Quit Game");
@@ -210,7 +211,7 @@ public class Main{
                     }
                 } else if (letter == 'Q'){
                     System.out.println();
-                    System.out.println("Thank you for playing for " + numRounds + " rounds!");
+                    System.out.println("Thank you for playing for " + numRounds + " rounds, " + userName + "!");
                     System.out.println("Game over. Your final score is: " + totalScore);
                     System.out.println();
                     done = true;
