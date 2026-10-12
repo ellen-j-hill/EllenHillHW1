@@ -78,7 +78,7 @@ public class Main{
                         System.out.println("Farkle! You rolled no playable dice! Points earned: 0");
                         turnOver = true;
                     }else{
-                        String input = "";
+                        String input;
                         int[] meld = {0,0,0,0,0,0};
                         boolean doneSelecting = false;
                         boolean invalidMoveTrigger = false;
@@ -205,6 +205,7 @@ public class Main{
             }
         }
     }
+   
     public static String getUserName(){
         Scanner nameScanner = new Scanner(System.in);
         System.out.print("Who is playing today?");
