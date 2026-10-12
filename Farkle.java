@@ -24,6 +24,9 @@ public class Main{
         Boolean playingGame = true;
 
         while (playingGame){
+
+                int diceToRoll = 6;
+                
                 // Making Dice
                 int[] dice = {0,0,0,0,0,0};
                     for (int i = 0; i<6; i++){       
@@ -32,7 +35,7 @@ public class Main{
                     }
 
                 //Testing hand with known values
-                int[] testHand = { 1, 5, 5, 3, 4, 5};
+                int[] testHand = { 6, 4, 2, 3, 3, 2};
                 for( int i = 0; i < 6; i++ ) {
                 dice[i] = testHand[i];
                 }
@@ -69,28 +72,13 @@ public class Main{
                 */
                 
                 //Check for Farkle!
-                    boolean isFarkle = true;
-                    if (diceNumberCount[1] !=0 || diceNumberCount[5] !=0){
-                        isFarkle = false;
+                    boolean isFarkle = checkIfFarkle(diceNumberCount, diceToRoll);
+                    if (isFarkle){
+                        System.out.println("YoU SUCK AT ROLLING DICE!");
+                        //PLEASE CHANGE LATER
+                        playingGame = false;
                     }
-
-                    for (int i = 2; i < 7; i++){
-                        if(diceNumberCount[i] >= 3){
-                            isFarkle = false;
-                        }
-                    }
-
-                //Checking for Pairs!
-                    int pairCount = 0;
-                    for ( int i = 1; i < 7; i++){
-                        if (diceNumberCount[i] == 2){
-                            pairCount++;
-                        }
-                    }
-                    if(pairCount==3){
-                        isFarkle = false;
-                    }
-
+                    
                 // Calculating Score!
                     if (isFarkle){
                         System.out.println("Farkle! Points: 0");
@@ -268,4 +256,28 @@ public class Main{
                 System.out.println("Enter letters for your choice(s)");
     }
 
+    public static boolean checkIfFarkle(int[] diceNumberCount, int diceToRoll){
+        //Check for 1s and 5s
+        if (diceNumberCount[1] > 0 || diceNumberCount[5] !=0){
+            return false;
+        }
+        //Check for Triples
+        for (int i = 2; i < 7; i++){
+            if(diceNumberCount[i] >= 3){
+                return false;
+            }
+        }
+        //Checking for Pairs!
+        int pairCount = 0;
+        for ( int i = 1; i < 7; i++){
+            if (diceNumberCount[i] == 2){
+                pairCount++;
+            }
+        }
+
+        if(pairCount==3 && diceToRoll == 6){
+            return false;
+        }
+        return true;
+    }
 }
