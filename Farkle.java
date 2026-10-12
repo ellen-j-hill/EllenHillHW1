@@ -81,6 +81,7 @@ public class Main{
                         String input = "";
                         int[] meld = {0,0,0,0,0,0};
                         boolean doneSelecting = false;
+                        boolean invalidMoveTrigger = false;
                         int meldScore = 0;
                         while (doneSelecting==false){
                             //Print Status
@@ -164,28 +165,38 @@ public class Main{
                                         System.out.println();
                                     }
                                 } else if (letter == 'R'){
-                                    tempScore += meldScore;
-                                    diceToRoll -= meldDiceCount; 
-                                    if (diceToRoll == 0){
-                                            printHotHands();
-                                            String hotHandChoice = scanner.nextLine().trim().toUpperCase();
-                                            if (hotHandChoice.equals("Y")){
-                                                System.out.println("Preparing to roll 6 more dice...");
-                                                diceToRoll=6;
-                                                doneSelecting=true;
-                                            }else{
-                                                System.out.println("Playing it safe! Banking your current points...");
-                                                totalScore += tempScore;
-                                                numRounds++;
-                                                doneSelecting = true;
-                                                turnOver=true; 
-                                            }
+                                    if(meldScore == 0 ){
+                                        System.out.println("Uh oh! You need at least one scoring dice to reroll! Try adding a scoring die to your meld");
+                                        doneSelecting = true; 
+                                        invalidMoveTrigger = true;
                                     }else{
-                                    System.out.println();
-                                    System.out.println("You have " + diceToRoll + " dice remaining to roll. Your previously scored dice (" + tempScore + ") will not count if you fail to score these dice");
-                                    System.out.println();
-                                    doneSelecting = true;
-                                    }
+
+                                        tempScore += meldScore;
+                                        diceToRoll -= meldDiceCount; 
+                                        if (diceToRoll == 0){
+                                                printHotHands();
+                                                String hotHandChoice = scanner.nextLine().trim().toUpperCase();
+                                                if (hotHandChoice.equals("Y")){
+                                                    System.out.println("Preparing to roll 6 more dice...");
+                                                    diceToRoll=6;
+                                                    doneSelecting=true;
+                                                }else{
+                                                    System.out.println("Playing it safe! Banking your current points...");
+                                                    totalScore += tempScore;
+                                                    numRounds++;
+                                                    doneSelecting = true;
+                                                    turnOver=true; 
+                                                }
+                                        }else{
+                                        System.out.println();
+                                        System.out.println("You have " + diceToRoll + " dice remaining to roll. Your previously scored dice (" + tempScore + ") will not count if you fail to score these dice");
+                                        System.out.println();
+                                        doneSelecting = true;
+                                        }
+                                }
+                                if (invalidMoveTrigger){
+                                        doneSelecting = false;
+                                        invalidMoveTrigger = false;
                                 }
                             }
                         }
@@ -193,7 +204,7 @@ public class Main{
                 }
             }
         }
-
+    }
     public static String getUserName(){
         Scanner nameScanner = new Scanner(System.in);
         System.out.print("Who is playing today?");
