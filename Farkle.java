@@ -40,10 +40,11 @@ public class Main{
                     }
 
                 // Testing round hand with known values
-                    int[] testHand = { 2, 2, 2, 5, 1, 5};
-                    for( int i = 0; i < diceToRoll; i++ ) {
-                    dice[i] = testHand[i];
-                    }
+                    // int[] testHand = { 2, 2, 2, 5, 1, 5};
+                    // for( int i = 0; i < diceToRoll; i++ ) {
+                    // dice[i] = testHand[i];
+                    // }
+                    
                 // Sort the round's hand
                     for (int i = 0; i<diceToRoll; i++){  
                         for (int j = 0; j < diceToRoll - i - 1; j++) {
