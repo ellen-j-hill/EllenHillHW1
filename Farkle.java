@@ -44,7 +44,6 @@ public class Main{
                     // for( int i = 0; i < diceToRoll; i++ ) {
                     // dice[i] = testHand[i];
                     // }
-                    
                 // Sort the round's hand
                     for (int i = 0; i<diceToRoll; i++){  
                         for (int j = 0; j < diceToRoll - i - 1; j++) {
@@ -106,7 +105,7 @@ public class Main{
                             printOptions(meldScore);
 
                             input = scanner.nextLine();
-                            for (int i = 0; i < input.length(); i++){
+                            for (int i = 0; i < input.length() && !doneSelecting; i++){
                                 char letter = Character.toUpperCase(input.charAt(i));
                                 
                                 if( letter >= 'A' && letter <='F'){
@@ -118,6 +117,18 @@ public class Main{
                                         dice[index] = meld[index];
                                         meld[index] = 0; 
                                     }
+                                    for (int j = 0; j < 7; j++){
+                                        meldDiceSizesCount[j] = 0;
+                                    }
+                                    meldDiceCount = 0;
+                                    for (int j = 0; j < 6; j++){
+                                        if (meld[j] != 0) {
+                                            meldDiceSizesCount[meld[j]]++;
+                                            meldDiceCount++;
+                                        }
+                                    }
+                                    meldScore = calculateMeldScore(meldDiceSizesCount);
+
                                 } else if (letter == 'Q'){
                                     System.out.println();
                                     System.out.println("Thank you for playing for " + numRounds + " rounds, " + userName + "!");
