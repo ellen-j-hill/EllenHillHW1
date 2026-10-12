@@ -44,6 +44,7 @@ public class Main{
                     // for( int i = 0; i < diceToRoll; i++ ) {
                     // dice[i] = testHand[i];
                     // }
+                    
                 // Sort the round's hand
                     for (int i = 0; i<diceToRoll; i++){  
                         for (int j = 0; j < diceToRoll - i - 1; j++) {
