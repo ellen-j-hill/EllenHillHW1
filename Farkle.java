@@ -27,7 +27,6 @@ public class Main{
             // Declare variables that reset at the round
             int diceToRoll = 6;
             int tempScore = 0;
-            int bankedDice = 0;
             Boolean turnOver = false; 
                 
             while (!turnOver){
@@ -76,9 +75,8 @@ public class Main{
                //Check for Farkle!
                 boolean isFarkle = checkIfFarkle(diceNumberCount, diceToRoll);
                     if (isFarkle){
-                        System.out.println("Farkle! You rolled no playable dice! Points: 0");
+                        System.out.println("Farkle! You rolled no playable dice! Points earned: 0");
                         turnOver = true;
-                        playingGame = false;
                     }else{
                         String input = "";
                         int[] meld = {0,0,0,0,0,0};
@@ -125,23 +123,51 @@ public class Main{
                                     System.out.println("Game over. Your final score is: " + totalScore);
                                     System.out.println();
                                     doneSelecting = true;
+                                    turnOver = true; 
                                     playingGame = false;
                                 } else if (letter == 'K'){
-                                    numRounds++;
-                                    doneSelecting = true;
-                                    totalScore += (tempScore + meldScore);
-                                    System.out.println();
-                                    System.out.println("Round over. Your score is currently: " + totalScore);
-                                    System.out.println();
+                                    tempScore += meldScore;
+                                    diceToRoll -= meldDiceCount;
+                                    if (diceToRoll == 0){
+                                            printHotHands();
+                                            String hotHandChoice = scanner.nextLine().trim().toUpperCase();
+                                            if (hotHandChoice.equals("Y")){
+                                                System.out.println("Preparing to roll 6 more dice...");
+                                                diceToRoll=6;
+                                                doneSelecting=true;
+                                            }else{
+                                                System.out.println("Playing it safe! Banking your current points...");
+                                                totalScore += tempScore;
+                                                numRounds++;
+                                                doneSelecting = true;
+                                                turnOver=true; 
+                                            }
+                                    }else{
+                                        totalScore += tempScore;
+                                        numRounds++;
+                                        doneSelecting = true;
+                                        turnOver=true; 
+                                        System.out.println();
+                                        System.out.println("Round over. Your score is currently: " + totalScore);
+                                        System.out.println();
+                                    }
                                 } else if (letter == 'R'){
                                     tempScore += meldScore;
                                     diceToRoll -= meldDiceCount; 
                                     if (diceToRoll == 0){
-                                        System.out.println("*********************** HOT HAND ********************");
-                                        System.out.println("           You get to roll with all 6 dice!          ");
-                                        System.out.println("                   Or end your turn?                 ");
-                                        System.out.println("*****************************************************");
-                                        doneSelecting = true;
+                                            printHotHands();
+                                            String hotHandChoice = scanner.nextLine().trim().toUpperCase();
+                                            if (hotHandChoice.equals("Y")){
+                                                System.out.println("Preparing to roll 6 more dice...");
+                                                diceToRoll=6;
+                                                doneSelecting=true;
+                                            }else{
+                                                System.out.println("Playing it safe! Banking your current points...");
+                                                totalScore += tempScore;
+                                                numRounds++;
+                                                doneSelecting = true;
+                                                turnOver=true; 
+                                            }
                                     }else{
                                     System.out.println();
                                     System.out.println("You have " + diceToRoll + " dice remaining to roll. Your previously scored dice (" + tempScore + ") will not count if you fail to score these dice");
@@ -155,7 +181,6 @@ public class Main{
                 }
             }
         }
-
 
     public static String getUserName(){
         Scanner nameScanner = new Scanner(System.in);
@@ -211,6 +236,13 @@ public class Main{
                 System.out.println("(Q) Quit Game");
                 System.out.println("");
                 System.out.println("Enter letters for your choice(s)");
+    }
+
+    public static void printHotHands(){
+        System.out.println("*********************** HOT HAND ********************");
+        System.out.println("        You get to roll again with all 6 dice!       ");
+        System.out.println("           Do you want to roll again? (Y/N)          ");
+        System.out.println("*****************************************************");
     }
 
     public static boolean checkIfFarkle(int[] diceNumberCount, int diceToRoll){
@@ -292,4 +324,5 @@ public class Main{
         }      
         return meldScore;
     }
+
 }
