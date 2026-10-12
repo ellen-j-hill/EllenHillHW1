@@ -18,39 +18,43 @@ public class Main{
         Random rand = new Random();
         Scanner scanner = new Scanner(System.in);
 
-        // Declare rounds
+        // Declare variables that are modified round to round
         int numRounds = 1;
         int totalScore = 0;
         Boolean playingGame = true;
 
         while (playingGame){
-
-                int diceToRoll = 6;
+            // Declare variables that reset at the round
+            int diceToRoll = 6;
+            int tempScore = 0;
+            int bankedDice = 0;
+            Boolean turnOver = false; 
                 
-                // Making Dice
-                int[] dice = {0,0,0,0,0,0};
-                    for (int i = 0; i<6; i++){       
+            while (!turnOver){
+                // Declare Arrays for dice values
+                    int[] dice = {0,0,0,0,0,0};
+                    int[] diceNumberCount = {0,0,0,0,0,0,0};
+
+                // Rolling Dice
+                    for (int i = 0; i<diceToRoll; i++){       
                         dice[i] = (rand.nextInt(6)+1);
-                    //    System. out.println("Placed " + dice[i] + " at " + i);
                     }
 
-                //Testing hand with known values
-                int[] testHand = { 6, 4, 2, 3, 3, 2};
-                for( int i = 0; i < 6; i++ ) {
-                dice[i] = testHand[i];
-                }
-
-                //Sort the Hand
-                for (int i = 0; i<6; i++){  
-                    for (int j = 0; j < 6- i - 1; j++) {
-                        if (dice[j] > dice[j+1]){
-                            int temp = dice[j];
-                            dice[j] = dice[j+1];
-                            dice[j+1] = temp; 
+                // Testing round hand with known values
+                    int[] testHand = { 2, 2, 2, 5, 1, 5};
+                    for( int i = 0; i < diceToRoll; i++ ) {
+                    dice[i] = testHand[i];
+                    }
+                // Sort the round's hand
+                    for (int i = 0; i<diceToRoll; i++){  
+                        for (int j = 0; j < diceToRoll - i - 1; j++) {
+                            if (dice[j] > dice[j+1]){
+                                int temp = dice[j];
+                                dice[j] = dice[j+1];
+                                dice[j+1] = temp; 
+                                }
                             }
                         }
-                    }
-
                 // Print the Hand
                 /*
                 System. out.print("Hand: ");
@@ -60,8 +64,7 @@ public class Main{
                 System. out.println(" ");
                 */
                 // Count Number Values
-                    int[] diceNumberCount = {0,0,0,0,0,0,0};
-                    for (int i = 0; i < 6; i++){
+                    for (int i = 0; i < diceToRoll; i++){
                             diceNumberCount[dice[i]]++; 
                     }
                 /*
@@ -70,31 +73,21 @@ public class Main{
                         System.out.println(i + ": "+ diceNumberCount[i] + " ");
                     }
                 */
-                
-                //Check for Farkle!
-                    boolean isFarkle = checkIfFarkle(diceNumberCount, diceToRoll);
+               //Check for Farkle!
+                boolean isFarkle = checkIfFarkle(diceNumberCount, diceToRoll);
                     if (isFarkle){
-                        System.out.println("YoU SUCK AT ROLLING DICE!");
-                        //PLEASE CHANGE LATER
+                        System.out.println("Farkle! You rolled no playable dice! Points: 0");
+                        turnOver = true;
                         playingGame = false;
-                    }
-                    
-                // Calculating Score!
-                    if (isFarkle){
-                        System.out.println("Farkle! Points: 0");
                     }else{
                         String input = "";
-                        int meldScore = 0;
-                        int tempScore = 0;
                         int[] meld = {0,0,0,0,0,0};
-                        boolean done = false;
-
-                        while (done==false){
+                        boolean doneSelecting = false;
+                        int meldScore = 0;
+                        while (doneSelecting==false){
                             //Print Status
                             printActiveDice(numRounds, userName, dice, meld);
-                        
-                        boolean isValidMeld = false; 
-                        //calculate the Meld
+
                             meldScore = 0; //Reset each time user changes meld
                             int meldDiceCount = 0;
                             int[] meldDice = {0,0,0,0,0,0};
@@ -110,95 +103,59 @@ public class Main{
                                 meldDiceSizesCount[meldDice[i]]++;
                             }
 
-                            //Checking for Straight!
+                            meldScore = calculateMeldScore(meldDiceSizesCount);            
+                            printOptions(meldScore);
 
-                            boolean isStraight = true;
-                            for( int i = 1; i <7; i++){
-                                if(meldDiceSizesCount[i] !=1){
-                                    isStraight=false; 
-                                }
-                            }
-                            if(isStraight == true){
-                                meldScore+=1000;
-                            }else{
-                                int pairsCounter = 0;
-                                for(int i = 1; i <7; i++){
-                                    if(meldDiceSizesCount[i] ==2){
-                                        pairsCounter++;
+                            input = scanner.nextLine();
+                            for (int i = 0; i < input.length(); i++){
+                                char letter = Character.toUpperCase(input.charAt(i));
+                                
+                                if( letter >= 'A' && letter <='F'){
+                                    int index = letter - 'A';
+                                    if(dice[index] != 0){
+                                        meld[index] = dice[index];
+                                        dice[index] = 0;
+                                    } else {
+                                        dice[index] = meld[index];
+                                        meld[index] = 0; 
+                                    }
+                                } else if (letter == 'Q'){
+                                    System.out.println();
+                                    System.out.println("Thank you for playing for " + numRounds + " rounds, " + userName + "!");
+                                    System.out.println("Game over. Your final score is: " + totalScore);
+                                    System.out.println();
+                                    doneSelecting = true;
+                                    playingGame = false;
+                                } else if (letter == 'K'){
+                                    numRounds++;
+                                    doneSelecting = true;
+                                    totalScore += (tempScore + meldScore);
+                                    System.out.println();
+                                    System.out.println("Round over. Your score is currently: " + totalScore);
+                                    System.out.println();
+                                } else if (letter == 'R'){
+                                    tempScore += meldScore;
+                                    diceToRoll -= meldDiceCount; 
+                                    if (diceToRoll == 0){
+                                        System.out.println("*********************** HOT HAND ********************");
+                                        System.out.println("           You get to roll with all 6 dice!          ");
+                                        System.out.println("                   Or end your turn?                 ");
+                                        System.out.println("*****************************************************");
+                                        doneSelecting = true;
+                                    }else{
+                                    System.out.println();
+                                    System.out.println("You have " + diceToRoll + " dice remaining to roll. Your previously scored dice (" + tempScore + ") will not count if you fail to score these dice");
+                                    System.out.println();
+                                    doneSelecting = true;
                                     }
                                 }
-
-                            //Checking for 3 Pairs
-                            if(pairsCounter==3){
-                                    meldScore += 750; 
-                            }else{
-                                //Check for Triples!
-                                Boolean isTriple = false;
-                                for(int i = 1; i < 7; i++){
-                                    if(meldDiceSizesCount[i] >=3){
-                                        isTriple = true;
-                                        int tripleSetPoints=0;
-                                        if(i ==1) {
-                                            tripleSetPoints=1000;
-                                        }else{
-                                            tripleSetPoints = (i * 100);
-                                        }
-                                        if (meldDiceSizesCount[i]>3){
-                                            tripleSetPoints += (meldDiceSizesCount[i]-3) *100 * 1;
-                                        }
-                                    meldScore += tripleSetPoints;
-                                    }
-                                }
                             }
-                            // Add 1s and 5s if unused
-                            if (meldDiceSizesCount[1] < 3){
-                                meldScore += meldDiceSizesCount[1] * 100;
-                            }
-                            if (meldDiceSizesCount[5]<3){
-                                meldScore += meldDiceSizesCount[5] * 50;
-                            }
-                        }                 
-                    printOptions(meldScore);
-
-                    input = scanner.nextLine();
-                    for (int i = 0; i < input.length(); i++){
-                        char letter = Character.toUpperCase(input.charAt(i));
-                        
-                        if( letter >= 'A' && letter <='F'){
-                            int index = letter - 'A';
-                            if(dice[index] != 0){
-                                meld[index] = dice[index];
-                                dice[index] = 0;
-                            } else {
-                                dice[index] = meld[index];
-                                meld[index] = 0; 
-                            }
-                        } else if (letter == 'Q'){
-                            System.out.println();
-                            System.out.println("Thank you for playing for " + numRounds + " rounds, " + userName + "!");
-                            System.out.println("Game over. Your final score is: " + totalScore);
-                            System.out.println();
-                            done = true;
-                            playingGame = false;
-                        } else if (letter == 'K'){
-                            numRounds++;
-                            done = true;
-                            totalScore += meldScore;
-                            System.out.println();
-                            System.out.println("Round over. Your score is currently: " + totalScore);
-                            System.out.println();
-                        } else if (letter == 'R'){
-                            tempScore += meldScore;
-                            int remainingDice = 6-meldDiceCount; 
-                            System.out.println();
-                            System.out.println("You have " + remainingDice + " dice remaining to roll. Your previously scored dice (" + tempScore + ") will not count if you fail to score these dice");
-                            System.out.println();
                         }
                     }
                 }
             }
         }
-    }
+
 
     public static String getUserName(){
         Scanner nameScanner = new Scanner(System.in);
@@ -279,5 +236,60 @@ public class Main{
             return false;
         }
         return true;
+    }
+
+    public static int calculateMeldScore(int[] meldDiceSizesCount){
+        int meldScore = 0;
+        //Checking for Straight!
+        boolean isStraight = true;
+            for( int i = 1; i <7; i++){
+                if(meldDiceSizesCount[i] !=1){
+                    isStraight=false; 
+                }
+            }
+            if(isStraight == true){
+                meldScore+=1000;
+                return meldScore;
+            }else{
+                int pairsCounter = 0;
+                for(int i = 1; i <7; i++){
+                    if(meldDiceSizesCount[i] ==2){
+                        pairsCounter++;
+                    }
+                }
+
+            //Checking for 3 Pairs
+            if(pairsCounter==3){
+                    meldScore += 750; 
+                    return meldScore;
+            }else{
+                //Check for Triples!
+                Boolean isTriple = false;
+                for(int i = 1; i < 7; i++){
+                    if(meldDiceSizesCount[i] >=3){
+                        isTriple = true;
+                        int tripleSetPoints=0;
+                        if(i ==1) {
+                            tripleSetPoints=1000;
+                        }else{
+                            tripleSetPoints = (i * 100);
+                        }
+                        if (meldDiceSizesCount[i]>3){
+                            tripleSetPoints += (meldDiceSizesCount[i]-3) *100 * 1;
+                        }
+                    meldScore += tripleSetPoints;
+                    }
+                }
+            }
+        
+            // Add 1s and 5s if unused
+            if (meldDiceSizesCount[1] < 3){
+                meldScore += meldDiceSizesCount[1] * 100;
+            }
+            if (meldDiceSizesCount[5]<3){
+                meldScore += meldDiceSizesCount[5] * 50;
+            }
+        }      
+        return meldScore;
     }
 }
