@@ -41,10 +41,10 @@ public class Farkle {
                 }
 
                 // Testing round hand with known values
-                // int[] testHand = { 2, 2, 2, 5, 1, 5};
-                // for( int i = 0; i < diceToRoll; i++ ) {
-                // dice[i] = testHand[i];
-                // }
+                int[] testHand = {2, 2, 2, 5, 1, 5};
+                for (int i = 0; i < diceToRoll; i++) {
+                    dice[i] = testHand[i];
+                }
                 // Sort the round's hand
                 for (int i = 0; i < diceToRoll; i++) {
                     for (int j = 0; j < diceToRoll - i - 1; j++) {
@@ -316,6 +316,7 @@ public class Farkle {
             for (int i = 1; i < 7; i++) {
                 if (meldDiceSizesCount[i] == 2) {
                     pairsCounter++;
+                    System.out.println(pairsCounter);
                 }
             }
 
@@ -329,16 +330,22 @@ public class Farkle {
                 for (int i = 1; i < 7; i++) {
                     if (meldDiceSizesCount[i] >= 3) {
                         isTriple = true;
-                        int tripleSetPoints = 0;
-                        if (i == 1) {
-                            tripleSetPoints = 1000;
+                        if (pairsCounter == 1){
+                            System.out.println("Full House!");
+                            meldScore += 1500;
                         } else {
-                            tripleSetPoints = (i * 100);
+                            int tripleSetPoints = 0;
+                            System.out.println("T-T-Triple!");
+                            if (i == 1) {
+                                tripleSetPoints = 1000;
+                            } else {
+                                tripleSetPoints = (i * 100);
+                            }
+                            if (meldDiceSizesCount[i] > 3) {
+                                tripleSetPoints += (meldDiceSizesCount[i] - 3) * 100 * 1;
+                            }
+                            meldScore += tripleSetPoints;
                         }
-                        if (meldDiceSizesCount[i] > 3) {
-                            tripleSetPoints += (meldDiceSizesCount[i] - 3) * 100 * 1;
-                        }
-                        meldScore += tripleSetPoints;
                     }
                 }
             }
