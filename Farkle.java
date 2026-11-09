@@ -28,17 +28,22 @@ public class Farkle {
         }
 
         // Declare variables that are modified round to round
-        int numRounds = 1;
+        int numRounds = 0;
         Boolean playingGame = true;
 
         while (playingGame) {
-            // Declare variables that reset at the round
+            int roundScore = 0;
             int diceToRoll = 6;
             int tempScore = 0;
             Boolean turnOver = false;
+            numRounds++;
 
             for (Players p : currentPlayers) {
-                int roundScore = 0;
+                roundScore = 0;
+                diceToRoll = 6;
+                tempScore = 0;
+                turnOver = false;
+
                 while (!turnOver) {
                     // Declare Arrays for dice values
                     int[] dice = {0, 0, 0, 0, 0, 0};
@@ -50,12 +55,11 @@ public class Farkle {
                     }
 
                     // Testing round hand with known values
-                    // int[] testHand = {5, 5, 5, 5, 1, 1};
-                    int[] testHand = {5, 5, 5, 1, 1, 1};
-                    // int[] testHand = {5, 5, 1, 1, 1, 1};
+                    int[] testHand = {5, 1, 1, 1, 1, 1};
                     for (int i = 0; i < diceToRoll; i++) {
                         dice[i] = testHand[i];
                     }
+
                     // Sort the round's hand
                     for (int i = 0; i < diceToRoll; i++) {
                         for (int j = 0; j < diceToRoll - i - 1; j++) {
@@ -154,13 +158,11 @@ public class Farkle {
                                         } else {
                                             System.out.println("Playing it safe! Banking your current points...");
                                             p.addPoints(tempScore);
-                                            numRounds++;
                                             doneSelecting = true;
                                             turnOver = true;
                                         }
                                     } else {
                                         p.addPoints(tempScore);
-                                        numRounds++;
                                         doneSelecting = true;
                                         turnOver = true;
                                         System.out.println();
@@ -186,7 +188,6 @@ public class Farkle {
                                             } else {
                                                 System.out.println("Playing it safe! Banking your current points...");
                                                 p.addPoints(tempScore);
-                                                numRounds++;
                                                 doneSelecting = true;
                                                 turnOver = true;
                                             }
@@ -320,7 +321,6 @@ public class Farkle {
 
     public static int calculateMeldScore(int[] meldDiceSizesCount) {
         int meldScore = 0;
-        Boolean isTriple = false;
         Boolean isFullHouse = false;
         //Checking for Straight!
         boolean isStraight = true;
@@ -340,6 +340,12 @@ public class Farkle {
                 }
             }
 
+            int triplesCounter = 0;
+            for (int i = 1; i < 7; i++) {
+                if (meldDiceSizesCount[i] == 3) {
+                    triplesCounter++;
+                }
+            }
             //Checking for 3 Pairs
             if (pairsCounter == 3) {
                 meldScore += 750;
@@ -348,10 +354,11 @@ public class Farkle {
                 //Check for Triples & Full House
                 for (int i = 1; i < 7; i++) {
                     if (meldDiceSizesCount[i] >= 3) {
-                        isTriple = true;
-                        if (pairsCounter == 1) {
-                            isFullHouse = true;
-                            meldScore += 1500;
+                        if (pairsCounter == 1 || triplesCounter == 2) {
+                            if (isFullHouse == false) {
+                                isFullHouse = true;
+                                meldScore += 1500;
+                            }
                         } else {
                             int tripleSetPoints = 0;
                             if (i == 1) {
@@ -367,26 +374,30 @@ public class Farkle {
                     }
                 }
             }
-            System.out.println("Your current score is " + meldScore);
-            if (isFullHouse = true) {
-                if (meldDiceSizesCount[1] + meldDiceSizesCount[5] == 6) {
-                    if (meldDiceSizesCount[1] >= meldDiceSizesCount[5]) {
-                        meldScore += 100;
-                    } else {
-                        meldScore += 50;
-                    }
+            if (isFullHouse == true && meldDiceSizesCount[1] + meldDiceSizesCount[5] == 6) {
+                if (meldDiceSizesCount[1] >= meldDiceSizesCount[5]) {
+                    meldScore += 100;
+                } else {
+                    meldScore += 50;
                 }
                 return meldScore;
-            } else // Add 1s and 5s if unused
-            if (meldDiceSizesCount[1] < 3) {
-                meldScore += meldDiceSizesCount[1] * 100;
-                System.out.println("Logged 1s! Added " + meldDiceSizesCount[1] * 100 + "!");
+            } else if (isFullHouse == true && meldDiceSizesCount[1] + meldDiceSizesCount[5] == 5) {
+                return meldScore;
+            } else if (isFullHouse == true && meldDiceSizesCount[1] == 1 || isFullHouse == true && meldDiceSizesCount[1] == 4) {
+                meldScore += 100;
+                return meldScore;
+            } else if (isFullHouse == true && meldDiceSizesCount[5] == 1 || isFullHouse == true && meldDiceSizesCount[5] == 4) {
+                meldScore += 50;
+                return meldScore;
+            } else {// Add 1s and 5s if unused
+                if (meldDiceSizesCount[1] < 3) {
+                    meldScore += meldDiceSizesCount[1] * 100;
+                }
+                if (meldDiceSizesCount[5] < 3) {
+                    meldScore += meldDiceSizesCount[5] * 50;
+                }
+                return meldScore;
             }
-            if (meldDiceSizesCount[5] < 3) {
-                meldScore += meldDiceSizesCount[5] * 50;
-                System.out.println("Logged 5s! Added " + meldDiceSizesCount[5] * 100 + "!");
-            }
-            return meldScore;
         }
     }
 }
