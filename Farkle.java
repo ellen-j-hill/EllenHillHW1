@@ -5,7 +5,7 @@
 * No Sources to Cite 
 * 
 * @author Ellen Hill
-* @version v1.2 10/11/2026
+* @version v1.2 11/8/2026
  */
 
 import java.util.*;
@@ -16,6 +16,8 @@ public class Farkle {
         printGameStart();
         Random rand = new Random();
         Scanner scanner = new Scanner(System.in);
+
+        int maxPoints = printQueryPoints();
 
         int numPlayers = printQueryPlayers();
         List<Players> currentPlayers = new ArrayList<>();
@@ -217,15 +219,41 @@ public class Farkle {
         Scanner nameScanner = new Scanner(System.in);
         System.out.print("What is player #" + indicy + "'s name? ");
         String name = "Unknown Player";
+        List<String> defaultNames = new ArrayList<>();
+        defaultNames.add("The Very Best Player");
+        defaultNames.add("Destined to Win Player");
+        defaultNames.add("The Fated Champion");
+        defaultNames.add("The Farkler");
+
         String givenName = nameScanner.nextLine();
         if (givenName.isEmpty()) {
-            System.out.println("You did not enter a name! You are an " + name + "!");
+            name = defaultNames.get(indicy - 1);
+            System.out.println("You did not enter a name! You are " + name + "!");
         } else {
             name = givenName;
             System.out.println("A new farkle champion has entered! Welcome " + name + "!");
         }
         System.out.println();
         return name;
+    }
+
+    public static int printQueryPoints() {
+        Scanner pointScanner = new Scanner(System.in);
+        System.out.print("How many points would you like to play to?");
+        String maxPointsString = pointScanner.nextLine();
+        int maxPoints = 10000;
+
+        if (maxPointsString.isEmpty()) {
+            System.out.println("You did not enter a point max! Using the default of 10,000...");
+            return maxPoints;
+        } else if (Integer.parseInt(maxPointsString) < 1) {
+            System.out.println("You did not enter a valid point max! Using the default of 10,000...");
+            return maxPoints;
+        } else {
+            maxPoints = Integer.parseInt(maxPointsString);
+            System.out.println("You have selected a point max of " + maxPoints + " points...");
+            return maxPoints;
+        }
     }
 
     public static void printGameStart() {
@@ -240,14 +268,16 @@ public class Farkle {
         Scanner playerScanner = new Scanner(System.in);
         System.out.print("How many players are playing today? (Select 1-4)");
         String numberOfPlayersString = playerScanner.nextLine();
-        int numberOfPlayers = Integer.parseInt(numberOfPlayersString);
+        int numberOfPlayers = 1;
 
-        if (numberOfPlayersString.isEmpty() || numberOfPlayers > 4) {
+        if (numberOfPlayersString.isEmpty()) {
             System.out.println("Defaulting to 1 Player...");
-            numberOfPlayers = 1;
+            return numberOfPlayers;
+        } else if (numberOfPlayers > 4) {
+            System.out.println("Defaulting to 1 Player...");
             return numberOfPlayers;
         } else {
-            System.out.println();
+            numberOfPlayers = Integer.parseInt(numberOfPlayersString);
             return numberOfPlayers;
         }
     }
