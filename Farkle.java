@@ -32,6 +32,7 @@ public class Farkle {
         // Declare variables that are modified round to round
         int numRounds = 0;
         Boolean playingGame = true;
+        int finalRoundIndex = -1;
 
         while (playingGame) {
             int roundScore = 0;
@@ -44,7 +45,12 @@ public class Farkle {
                 roundScore = 0;
                 diceToRoll = 6;
                 tempScore = 0;
+                if (p.getIndex() == finalRoundIndex) {
+                    playingGame = false;
+                }
                 if (!playingGame) {
+                    printEndGame(currentPlayers);
+                    printRoundScoreBoard(currentPlayers);
                     break;
                 }
                 turnOver = false;
@@ -169,7 +175,7 @@ public class Farkle {
                                         doneSelecting = true;
                                         turnOver = true;
                                         System.out.println();
-                                        System.out.println("Round over. Your score is currently: " + p.getPoints());
+                                        System.out.println("Turn over. Your score is currently: " + p.getPoints());
                                         System.out.println();
                                         printRoundScoreBoard(currentPlayers);
                                         if (checkBeyondPointCap(maxPoints, p) && numPlayers == 1) {
@@ -178,9 +184,9 @@ public class Farkle {
                                             printEndGame(currentPlayers);
                                             printRoundScoreBoard(currentPlayers);
                                             playingGame = false;
-                                        } else if (checkBeyondPointCap(maxPoints, p)) {
+                                        } else if (checkBeyondPointCap(maxPoints, p) && finalRoundIndex == -1) {
                                             System.out.println("You scored above the point cap! We are entering the FINAL ROUND!");
-
+                                            finalRoundIndex = p.getIndex();
                                         }
                                     }
                                 } else if (letter == 'R') {
@@ -459,7 +465,9 @@ public class Farkle {
                 winnerName = p.getName();
             }
         }
+        System.out.println("**********************************************************************");
         System.out.println("* Congratulations " + winnerName + " won with " + winningPoints + "! *");
+        System.out.println("**********************************************************************");
     }
 
     public static boolean checkBeyondPointCap(int pointCap, Players p) {
