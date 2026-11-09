@@ -1,9 +1,9 @@
 
 public class Players {
 
-    String playerName;
-    int index;
-    int scoredPoints;
+    private String playerName;
+    private int index;
+    private int scoredPoints;
 
     public Players(String inputName, int inputTurn, int inputPoints) {
         playerName = inputName;

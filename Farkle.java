@@ -181,6 +181,7 @@ public class Farkle {
                                             playingGame = false;
                                         } else if (checkBeyondPointCap(maxPoints, p)) {
                                             System.out.println("You scored above the point cap! We are entering the FINAL ROUND!");
+
                                         }
                                     }
                                 } else if (letter == 'R') {
@@ -462,7 +463,7 @@ public class Farkle {
         System.out.println("* Congratulations " + winnerName + " won with " + winningPoints + "! *");
     }
 
-    public static Boolean checkBeyondPointCap(int pointCap, Players p) {
+    public static boolean checkBeyondPointCap(int pointCap, Players p) {
         if (pointCap > p.getPoints()) {
             return false;
         }
