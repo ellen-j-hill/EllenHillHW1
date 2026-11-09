@@ -43,6 +43,7 @@ public class Farkle {
                 diceToRoll = 6;
                 tempScore = 0;
                 turnOver = false;
+                printRoundScoreBoard(currentPlayers);
 
                 while (!turnOver) {
                     // Declare Arrays for dice values
@@ -399,5 +400,13 @@ public class Farkle {
                 return meldScore;
             }
         }
+    }
+
+    public static void printRoundScoreBoard(List<Players> currentPlayers) {
+        System.out.println("*********************** SCORE BOARD ***********************");
+        for (Players p : currentPlayers) {
+            System.out.println("     " + p.getName() + ": " + p.getPoints());
+        }
+        System.out.println("**********************************************************");
     }
 }
