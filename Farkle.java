@@ -59,12 +59,11 @@ public class Farkle {
                         dice[i] = (rand.nextInt(6) + 1);
                     }
 
-                    // Testing round hand with known values
-                    int[] testHand = {5, 1, 1, 1, 1, 1};
-                    for (int i = 0; i < diceToRoll; i++) {
-                        dice[i] = testHand[i];
-                    }
-
+                    // // Testing round hand with known values
+                    // int[] testHand = {5, 1, 1, 1, 1, 1};
+                    // for (int i = 0; i < diceToRoll; i++) {
+                    //     dice[i] = testHand[i];
+                    // }
                     // Sort the round's hand
                     for (int i = 0; i < diceToRoll; i++) {
                         for (int j = 0; j < diceToRoll - i - 1; j++) {
@@ -249,7 +248,7 @@ public class Farkle {
 
     public static int printQueryPoints() {
         Scanner pointScanner = new Scanner(System.in);
-        System.out.print("How many points would you like to play to?");
+        System.out.println("How many points would you like to play to?");
         String maxPointsString = pointScanner.nextLine();
         int maxPoints = 10000;
 
@@ -276,7 +275,7 @@ public class Farkle {
 
     public static int printQueryPlayers() {
         Scanner playerScanner = new Scanner(System.in);
-        System.out.print("How many players are playing today? (Select 1-4)");
+        System.out.println("How many players are playing today? (Select 1-4)");
         String numberOfPlayersString = playerScanner.nextLine();
         int numberOfPlayers = 1;
 
