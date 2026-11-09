@@ -42,8 +42,10 @@ public class Farkle {
                 roundScore = 0;
                 diceToRoll = 6;
                 tempScore = 0;
+                if (!playingGame) {
+                    break;
+                }
                 turnOver = false;
-                printRoundScoreBoard(currentPlayers);
 
                 while (!turnOver) {
                     // Declare Arrays for dice values
@@ -81,6 +83,7 @@ public class Farkle {
                     boolean isFarkle = checkIfFarkle(diceNumberCount, diceToRoll);
                     if (isFarkle) {
                         System.out.println("Farkle! You rolled no playable dice! Points earned: 0");
+                        printRoundScoreBoard(currentPlayers);
                         turnOver = true;
                     } else {
                         String input;
@@ -137,12 +140,9 @@ public class Farkle {
 
                                 } else if (letter == 'Q') {
                                     System.out.println();
-                                    System.out.println("Thank you for playing for " + numRounds + " rounds, " + p.getName() + "!");
-                                    System.out.println("Game over. Your final scores are:");
-                                    for (Players pl : currentPlayers) {
-                                        System.out.println("Player " + pl.getIndex() + " - " + pl.getName() + ": " + pl.getPoints());
-                                    }
-                                    System.out.println();
+                                    System.out.println("Thank you for playing for " + numRounds + " rounds");
+                                    printEndGame(currentPlayers);
+                                    printRoundScoreBoard(currentPlayers);
                                     doneSelecting = true;
                                     turnOver = true;
                                     playingGame = false;
@@ -161,6 +161,7 @@ public class Farkle {
                                             p.addPoints(tempScore);
                                             doneSelecting = true;
                                             turnOver = true;
+                                            printRoundScoreBoard(currentPlayers);
                                         }
                                     } else {
                                         p.addPoints(tempScore);
@@ -169,6 +170,7 @@ public class Farkle {
                                         System.out.println();
                                         System.out.println("Round over. Your score is currently: " + p.getPoints());
                                         System.out.println();
+                                        printRoundScoreBoard(currentPlayers);
                                     }
                                 } else if (letter == 'R') {
                                     if (meldScore == 0) {
@@ -176,7 +178,6 @@ public class Farkle {
                                         doneSelecting = true;
                                         invalidMoveTrigger = true;
                                     } else {
-
                                         tempScore += meldScore;
                                         diceToRoll -= meldDiceCount;
                                         if (diceToRoll == 0) {
@@ -407,6 +408,18 @@ public class Farkle {
         for (Players p : currentPlayers) {
             System.out.println("     " + p.getName() + ": " + p.getPoints());
         }
-        System.out.println("**********************************************************");
+        System.out.println("***********************************************************");
+    }
+
+    public static void printEndGame(List<Players> currentPlayers) {
+        String winnerName = "No One";
+        int winningPoints = 0;
+        for (Players p : currentPlayers) {
+            if (p.getPoints() > winningPoints) {
+                winningPoints = p.getPoints();
+                winnerName = p.getName();
+            }
+        }
+        System.out.println("* Congratulations " + winnerName + " won with " + winningPoints + "! *");
     }
 }
