@@ -15,6 +15,12 @@ public class Farkle {
 
     public static void main(String[] args) {
         printGameStart();
+        int numPlayers = printQueryPlayers();
+        List<Players> currentPlayers = new ArrayList<>();
+        for (int i = 1; i <= numPLayers; i++) {
+            Players player = new Players;
+            currentPlayers.add(player)
+        }
         String userName = getUserName();
         Random rand = new Random();
         Scanner scanner = new Scanner(System.in);
@@ -41,7 +47,9 @@ public class Farkle {
                 }
 
                 // Testing round hand with known values
-                int[] testHand = {2, 2, 2, 5, 1, 5};
+                // int[] testHand = {5, 5, 5, 5, 1, 1};
+                int[] testHand = {5, 5, 5, 1, 1, 1};
+                // int[] testHand = {5, 5, 1, 1, 1, 1};
                 for (int i = 0; i < diceToRoll; i++) {
                     dice[i] = testHand[i];
                 }
@@ -55,24 +63,12 @@ public class Farkle {
                         }
                     }
                 }
-                // Print the Hand
-                /*
-                System. out.print("Hand: ");
-                    for (int i = 0; i<6; i++){       
-                    System.out.print(dice[i] + " ");
-                    }
-                System. out.println(" ");
-                 */
+
                 // Count Number Values
                 for (int i = 0; i < diceToRoll; i++) {
                     diceNumberCount[dice[i]]++;
                 }
-                /*
-                    System. out.println("Quantity of each die value: ");
-                    for( int i = 1; i < 7; i++){
-                        System.out.println(i + ": "+ diceNumberCount[i] + " ");
-                    }
-                 */
+
                 //Check for Farkle!
                 boolean isFarkle = checkIfFarkle(diceNumberCount, diceToRoll);
                 if (isFarkle) {
@@ -230,6 +226,22 @@ public class Farkle {
         System.out.println();
     }
 
+    public static int printQueryPlayers() {
+        Scanner playerScanner = new Scanner(System.in);
+        System.out.print("How many players are playing today? (Select 1-4)");
+        String numberOfPlayersString = playerScanner.nextLine();
+        int numberOfPlayers = Integer.parseInt(numberOfPlayersString);
+
+        if (numberOfPlayersString.isEmpty() || numberOfPlayers > 4) {
+            System.out.println("Defaulting to 1 Player...");
+            numberOfPlayers = 1;
+            return numberOfPlayers;
+        } else {
+            System.out.println();
+            return numberOfPlayers;
+        }
+    }
+
     public static void printActiveDice(int numRounds, String userName, int[] dice, int[] meld) {
         System.out.println("");
         System.out.println("******************** Round " + numRounds + " : " + userName + "'s Turn! ********************");
@@ -301,6 +313,8 @@ public class Farkle {
 
     public static int calculateMeldScore(int[] meldDiceSizesCount) {
         int meldScore = 0;
+        Boolean isTriple = false;
+        Boolean isFullHouse = false;
         //Checking for Straight!
         boolean isStraight = true;
         for (int i = 1; i < 7; i++) {
@@ -310,32 +324,29 @@ public class Farkle {
         }
         if (isStraight == true) {
             meldScore += 1000;
-            return meldScore;
+            return meldScore; //No available dice after these hands
         } else {
             int pairsCounter = 0;
             for (int i = 1; i < 7; i++) {
                 if (meldDiceSizesCount[i] == 2) {
                     pairsCounter++;
-                    System.out.println(pairsCounter);
                 }
             }
 
             //Checking for 3 Pairs
             if (pairsCounter == 3) {
                 meldScore += 750;
-                return meldScore;
+                return meldScore; //Because there are no available dice after these hands
             } else {
-                //Check for Triples!
-                Boolean isTriple = false;
+                //Check for Triples & Full House
                 for (int i = 1; i < 7; i++) {
                     if (meldDiceSizesCount[i] >= 3) {
                         isTriple = true;
-                        if (pairsCounter == 1){
-                            System.out.println("Full House!");
+                        if (pairsCounter == 1) {
+                            isFullHouse = true;
                             meldScore += 1500;
                         } else {
                             int tripleSetPoints = 0;
-                            System.out.println("T-T-Triple!");
                             if (i == 1) {
                                 tripleSetPoints = 1000;
                             } else {
@@ -349,16 +360,26 @@ public class Farkle {
                     }
                 }
             }
-
-            // Add 1s and 5s if unused
+            System.out.println("Your current score is " + meldScore);
+            if (isFullHouse = true) {
+                if (meldDiceSizesCount[1] + meldDiceSizesCount[5] == 6) {
+                    if (meldDiceSizesCount[1] >= meldDiceSizesCount[5]) {
+                        meldScore += 100;
+                    } else {
+                        meldScore += 50;
+                    }
+                }
+                return meldScore;
+            } else // Add 1s and 5s if unused
             if (meldDiceSizesCount[1] < 3) {
                 meldScore += meldDiceSizesCount[1] * 100;
+                System.out.println("Logged 1s! Added " + meldDiceSizesCount[1] * 100 + "!");
             }
             if (meldDiceSizesCount[5] < 3) {
                 meldScore += meldDiceSizesCount[5] * 50;
+                System.out.println("Logged 5s! Added " + meldDiceSizesCount[5] * 100 + "!");
             }
+            return meldScore;
         }
-        return meldScore;
     }
-
 }
