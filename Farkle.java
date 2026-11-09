@@ -1,7 +1,7 @@
 /*
 * This program allows the user to play a game of farkle!
 * CPSC 224-01, Fall 2026
-* Homework #2
+* Homework #3
 * No Sources to Cite 
 * 
 * @author Ellen Hill
