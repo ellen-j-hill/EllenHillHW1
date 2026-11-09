@@ -173,6 +173,15 @@ public class Farkle {
                                         System.out.println("Round over. Your score is currently: " + p.getPoints());
                                         System.out.println();
                                         printRoundScoreBoard(currentPlayers);
+                                        if (checkBeyondPointCap(maxPoints, p) && numPlayers == 1) {
+                                            System.out.println("You scored above the point cap! That's Game!");
+                                            System.out.println();
+                                            printEndGame(currentPlayers);
+                                            printRoundScoreBoard(currentPlayers);
+                                            playingGame = false;
+                                        } else if (checkBeyondPointCap(maxPoints, p)) {
+                                            System.out.println("You scored above the point cap! We are entering the FINAL ROUND!");
+                                        }
                                     }
                                 } else if (letter == 'R') {
                                     if (meldScore == 0) {
@@ -451,5 +460,12 @@ public class Farkle {
             }
         }
         System.out.println("* Congratulations " + winnerName + " won with " + winningPoints + "! *");
+    }
+
+    public static Boolean checkBeyondPointCap(int pointCap, Players p) {
+        if (pointCap > p.getPoints()) {
+            return false;
+        }
+        return true;
     }
 }
