@@ -49,7 +49,6 @@ public class Farkle {
                 if (!playingGame) {
                     printEndGame(currentPlayers);
                     printRoundScoreBoard(currentPlayers);
-                    scanner.close();
                     break;
                 }
                 turnOver = false;
@@ -291,20 +290,17 @@ public class Farkle {
         System.out.println("How many players are playing today? (Select 1-4)");
         String numberOfPlayersString = playerScanner.nextLine();
         int numberOfPlayers = 1;
+        playerScanner.close();
 
         if (numberOfPlayersString.isEmpty()) {
             System.out.println("Defaulting to 1 Player...");
-            playerScanner.close();
-            return numberOfPlayers;
+
         } else if (numberOfPlayers > 4) {
             System.out.println("Defaulting to 1 Player...");
-            playerScanner.close();
-            return numberOfPlayers;
         } else {
             numberOfPlayers = Integer.parseInt(numberOfPlayersString);
-            playerScanner.close();
-            return numberOfPlayers;
         }
+        return numberOfPlayers;
     }
 
     public static void printActiveDice(int numRounds, Players player, int[] dice, int[] meld) {
