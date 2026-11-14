@@ -263,18 +263,15 @@ public class Farkle {
 
         if (maxPointsString.isEmpty()) {
             System.out.println("You did not enter a point max! Using the default of 10,000...");
-            pointScanner.close();
-            return maxPoints;
         } else if (Integer.parseInt(maxPointsString) < 1) {
             System.out.println("You did not enter a valid point max! Using the default of 10,000...");
-            pointScanner.close();
-            return maxPoints;
         } else {
             maxPoints = Integer.parseInt(maxPointsString);
             System.out.println("You have selected a point max of " + maxPoints + " points...");
-            pointScanner.close();
-            return maxPoints;
         }
+        
+        pointScanner.close();
+        return maxPoints;
     }
 
     public static void printGameStart() {
