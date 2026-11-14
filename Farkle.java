@@ -11,11 +11,11 @@
 import java.util.*;
 
 public class Farkle {
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         printGameStart();
         Random rand = new Random();
-        Scanner scanner = new Scanner(System.in);
 
         int maxPoints = printQueryPoints();
 
@@ -63,11 +63,6 @@ public class Farkle {
                         dice[i] = (rand.nextInt(6) + 1);
                     }
 
-                    // // Testing round hand with known values
-                    // int[] testHand = {5, 1, 1, 1, 1, 1};
-                    // for (int i = 0; i < diceToRoll; i++) {
-                    // dice[i] = testHand[i];
-                    // }
                     // Sort the round's hand
                     for (int i = 0; i < diceToRoll; i++) {
                         for (int j = 0; j < diceToRoll - i - 1; j++) {
@@ -230,10 +225,10 @@ public class Farkle {
                 }
             }
         }
+        scanner.close();
     }
 
     public static String getUserName(int index) {
-        Scanner nameScanner = new Scanner(System.in);
         System.out.print("What is player #" + index + "'s name? ");
         String name = "Unknown Player";
         List<String> defaultNames = new ArrayList<>();
@@ -242,7 +237,7 @@ public class Farkle {
         defaultNames.add("The Fated Champion");
         defaultNames.add("The Farkler");
 
-        String givenName = nameScanner.nextLine();
+        String givenName = scanner.nextLine();
         if (givenName.isEmpty()) {
             name = defaultNames.get(index - 1);
             System.out.println("You did not enter a name! You are " + name + "!");
@@ -251,14 +246,12 @@ public class Farkle {
             System.out.println("A new farkle champion has entered! Welcome " + name + "!");
         }
         System.out.println();
-        nameScanner.close();
         return name;
     }
 
     public static int printQueryPoints() {
-        Scanner pointScanner = new Scanner(System.in);
         System.out.println("How many points would you like to play to?");
-        String maxPointsString = pointScanner.nextLine();
+        String maxPointsString = scanner.nextLine();
         int maxPoints = 10000;
 
         if (maxPointsString.isEmpty()) {
@@ -270,7 +263,6 @@ public class Farkle {
             System.out.println("You have selected a point max of " + maxPoints + " points...");
         }
 
-        pointScanner.close();
         return maxPoints;
     }
 
@@ -283,20 +275,18 @@ public class Farkle {
     }
 
     public static int printQueryPlayers() {
-        Scanner playerScanner = new Scanner(System.in);
         System.out.println("How many players are playing today? (Select 1-4)");
-        String numberOfPlayersString = playerScanner.nextLine();
+        String numberOfPlayersString = scanner.nextLine();
         int numberOfPlayers = 1;
-        playerScanner.close();
-
+        
         if (numberOfPlayersString.isEmpty()) {
             System.out.println("Defaulting to 1 Player...");
-
         } else if (numberOfPlayers > 4) {
             System.out.println("Defaulting to 1 Player...");
         } else {
             numberOfPlayers = Integer.parseInt(numberOfPlayersString);
         }
+
         return numberOfPlayers;
     }
 
