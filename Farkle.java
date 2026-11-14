@@ -278,7 +278,7 @@ public class Farkle {
         System.out.println("How many players are playing today? (Select 1-4)");
         String numberOfPlayersString = scanner.nextLine();
         int numberOfPlayers = 1;
-        
+
         if (numberOfPlayersString.isEmpty()) {
             System.out.println("Defaulting to 1 Player...");
         } else if (numberOfPlayers > 4) {
@@ -408,7 +408,7 @@ public class Farkle {
                                 tripleSetPoints = (i * 100);
                             }
                             if (meldDiceSizesCount[i] > 3) {
-                                tripleSetPoints += (meldDiceSizesCount[i] - 3) * 100 * 1;
+                                tripleSetPoints += (meldDiceSizesCount[i] - 3) * 100 * i;
                             }
                             meldScore += tripleSetPoints;
                         }
