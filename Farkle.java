@@ -232,9 +232,9 @@ public class Farkle {
         }
     }
 
-    public static String getUserName(int indicy) {
+    public static String getUserName(int index) {
         Scanner nameScanner = new Scanner(System.in);
-        System.out.print("What is player #" + indicy + "'s name? ");
+        System.out.print("What is player #" + index + "'s name? ");
         String name = "Unknown Player";
         List<String> defaultNames = new ArrayList<>();
         defaultNames.add("The Very Best Player");
@@ -244,7 +244,7 @@ public class Farkle {
 
         String givenName = nameScanner.nextLine();
         if (givenName.isEmpty()) {
-            name = defaultNames.get(indicy - 1);
+            name = defaultNames.get(index - 1);
             System.out.println("You did not enter a name! You are " + name + "!");
         } else {
             name = givenName;
@@ -269,7 +269,7 @@ public class Farkle {
             maxPoints = Integer.parseInt(maxPointsString);
             System.out.println("You have selected a point max of " + maxPoints + " points...");
         }
-        
+
         pointScanner.close();
         return maxPoints;
     }
