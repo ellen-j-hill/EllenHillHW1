@@ -35,14 +35,12 @@ public class Farkle {
         int finalRoundIndex = -1;
 
         while (playingGame) {
-            int roundScore = 0;
             int diceToRoll = 6;
             int tempScore = 0;
             Boolean turnOver = false;
             numRounds++;
 
             for (Players p : currentPlayers) {
-                roundScore = 0;
                 diceToRoll = 6;
                 tempScore = 0;
                 if (p.getIndex() == finalRoundIndex) {
@@ -51,14 +49,15 @@ public class Farkle {
                 if (!playingGame) {
                     printEndGame(currentPlayers);
                     printRoundScoreBoard(currentPlayers);
+                    scanner.close();
                     break;
                 }
                 turnOver = false;
 
                 while (!turnOver) {
                     // Declare Arrays for dice values
-                    int[] dice = {0, 0, 0, 0, 0, 0};
-                    int[] diceNumberCount = {0, 0, 0, 0, 0, 0, 0};
+                    int[] dice = { 0, 0, 0, 0, 0, 0 };
+                    int[] diceNumberCount = { 0, 0, 0, 0, 0, 0, 0 };
 
                     // Rolling Dice
                     for (int i = 0; i < diceToRoll; i++) {
@@ -68,7 +67,7 @@ public class Farkle {
                     // // Testing round hand with known values
                     // int[] testHand = {5, 1, 1, 1, 1, 1};
                     // for (int i = 0; i < diceToRoll; i++) {
-                    //     dice[i] = testHand[i];
+                    // dice[i] = testHand[i];
                     // }
                     // Sort the round's hand
                     for (int i = 0; i < diceToRoll; i++) {
@@ -86,7 +85,7 @@ public class Farkle {
                         diceNumberCount[dice[i]]++;
                     }
 
-                    //Check for Farkle!
+                    // Check for Farkle!
                     boolean isFarkle = checkIfFarkle(diceNumberCount, diceToRoll);
                     if (isFarkle) {
                         System.out.println("Farkle! You rolled no playable dice! Points earned: 0");
@@ -94,17 +93,17 @@ public class Farkle {
                         turnOver = true;
                     } else {
                         String input;
-                        int[] meld = {0, 0, 0, 0, 0, 0};
+                        int[] meld = { 0, 0, 0, 0, 0, 0 };
                         boolean doneSelecting = false;
                         boolean invalidMoveTrigger = false;
                         int meldScore = 0;
                         while (doneSelecting == false) {
-                            //Print Status
+                            // Print Status
                             printActiveDice(numRounds, p, dice, meld);
 
-                            meldScore = 0; //Reset each time user changes meld
+                            meldScore = 0; // Reset each time user changes meld
                             int meldDiceCount = 0;
-                            int[] meldDice = {0, 0, 0, 0, 0, 0};
+                            int[] meldDice = { 0, 0, 0, 0, 0, 0 };
                             for (int i = 0; i < 6; i++) {
                                 if (meld[i] != 0) {
                                     meldDice[meldDiceCount] = meld[i];
@@ -112,7 +111,7 @@ public class Farkle {
                                 }
                             }
 
-                            int[] meldDiceSizesCount = {0, 0, 0, 0, 0, 0, 0};
+                            int[] meldDiceSizesCount = { 0, 0, 0, 0, 0, 0, 0 };
                             for (int i = 0; i < 6; i++) {
                                 meldDiceSizesCount[meldDice[i]]++;
                             }
@@ -185,13 +184,15 @@ public class Farkle {
                                             printRoundScoreBoard(currentPlayers);
                                             playingGame = false;
                                         } else if (checkBeyondPointCap(maxPoints, p) && finalRoundIndex == -1) {
-                                            System.out.println("You scored above the point cap! We are entering the FINAL ROUND!");
+                                            System.out.println(
+                                                    "You scored above the point cap! We are entering the FINAL ROUND!");
                                             finalRoundIndex = p.getIndex();
                                         }
                                     }
                                 } else if (letter == 'R') {
                                     if (meldScore == 0) {
-                                        System.out.println("Uh oh! You need at least one scoring dice to reroll! Try adding a scoring die to your meld");
+                                        System.out.println(
+                                                "Uh oh! You need at least one scoring dice to reroll! Try adding a scoring die to your meld");
                                         doneSelecting = true;
                                         invalidMoveTrigger = true;
                                     } else {
@@ -212,7 +213,9 @@ public class Farkle {
                                             }
                                         } else {
                                             System.out.println();
-                                            System.out.println("You have " + diceToRoll + " dice remaining to roll. Your previously scored dice (" + tempScore + ") will not count if you fail to score these dice");
+                                            System.out.println("You have " + diceToRoll
+                                                    + " dice remaining to roll. Your previously scored dice ("
+                                                    + tempScore + ") will not count if you fail to score these dice");
                                             System.out.println();
                                             doneSelecting = true;
                                         }
@@ -249,6 +252,7 @@ public class Farkle {
             System.out.println("A new farkle champion has entered! Welcome " + name + "!");
         }
         System.out.println();
+        nameScanner.close();
         return name;
     }
 
@@ -260,13 +264,16 @@ public class Farkle {
 
         if (maxPointsString.isEmpty()) {
             System.out.println("You did not enter a point max! Using the default of 10,000...");
+            pointScanner.close();
             return maxPoints;
         } else if (Integer.parseInt(maxPointsString) < 1) {
             System.out.println("You did not enter a valid point max! Using the default of 10,000...");
+            pointScanner.close();
             return maxPoints;
         } else {
             maxPoints = Integer.parseInt(maxPointsString);
             System.out.println("You have selected a point max of " + maxPoints + " points...");
+            pointScanner.close();
             return maxPoints;
         }
     }
@@ -287,19 +294,23 @@ public class Farkle {
 
         if (numberOfPlayersString.isEmpty()) {
             System.out.println("Defaulting to 1 Player...");
+            playerScanner.close();
             return numberOfPlayers;
         } else if (numberOfPlayers > 4) {
             System.out.println("Defaulting to 1 Player...");
+            playerScanner.close();
             return numberOfPlayers;
         } else {
             numberOfPlayers = Integer.parseInt(numberOfPlayersString);
+            playerScanner.close();
             return numberOfPlayers;
         }
     }
 
     public static void printActiveDice(int numRounds, Players player, int[] dice, int[] meld) {
         System.out.println("");
-        System.out.println("******************** Round " + numRounds + " : " + player.getName() + "'s Turn! ********************");
+        System.out.println(
+                "******************** Round " + numRounds + " : " + player.getName() + "'s Turn! ********************");
         System.out.println("******************** Current Hand and Meld ********************");
         System.out.println(" Die   Hand |   Meld");
         System.out.println("---------------+---------------");
@@ -342,17 +353,17 @@ public class Farkle {
     }
 
     public static boolean checkIfFarkle(int[] diceNumberCount, int diceToRoll) {
-        //Check for 1s and 5s
+        // Check for 1s and 5s
         if (diceNumberCount[1] > 0 || diceNumberCount[5] != 0) {
             return false;
         }
-        //Check for Triples
+        // Check for Triples
         for (int i = 2; i < 7; i++) {
             if (diceNumberCount[i] >= 3) {
                 return false;
             }
         }
-        //Checking for Pairs!
+        // Checking for Pairs!
         int pairCount = 0;
         for (int i = 1; i < 7; i++) {
             if (diceNumberCount[i] == 2) {
@@ -369,7 +380,7 @@ public class Farkle {
     public static int calculateMeldScore(int[] meldDiceSizesCount) {
         int meldScore = 0;
         Boolean isFullHouse = false;
-        //Checking for Straight!
+        // Checking for Straight!
         boolean isStraight = true;
         for (int i = 1; i < 7; i++) {
             if (meldDiceSizesCount[i] != 1) {
@@ -378,7 +389,7 @@ public class Farkle {
         }
         if (isStraight == true) {
             meldScore += 1000;
-            return meldScore; //No available dice after these hands
+            return meldScore; // No available dice after these hands
         } else {
             int pairsCounter = 0;
             for (int i = 1; i < 7; i++) {
@@ -393,12 +404,12 @@ public class Farkle {
                     triplesCounter++;
                 }
             }
-            //Checking for 3 Pairs
+            // Checking for 3 Pairs
             if (pairsCounter == 3) {
                 meldScore += 750;
-                return meldScore; //Because there are no available dice after these hands
+                return meldScore; // Because there are no available dice after these hands
             } else {
-                //Check for Triples & Full House
+                // Check for Triples & Full House
                 for (int i = 1; i < 7; i++) {
                     if (meldDiceSizesCount[i] >= 3) {
                         if (pairsCounter == 1 || triplesCounter == 2) {
@@ -430,10 +441,12 @@ public class Farkle {
                 return meldScore;
             } else if (isFullHouse == true && meldDiceSizesCount[1] + meldDiceSizesCount[5] == 5) {
                 return meldScore;
-            } else if (isFullHouse == true && meldDiceSizesCount[1] == 1 || isFullHouse == true && meldDiceSizesCount[1] == 4) {
+            } else if (isFullHouse == true && meldDiceSizesCount[1] == 1
+                    || isFullHouse == true && meldDiceSizesCount[1] == 4) {
                 meldScore += 100;
                 return meldScore;
-            } else if (isFullHouse == true && meldDiceSizesCount[5] == 1 || isFullHouse == true && meldDiceSizesCount[5] == 4) {
+            } else if (isFullHouse == true && meldDiceSizesCount[5] == 1
+                    || isFullHouse == true && meldDiceSizesCount[5] == 4) {
                 meldScore += 50;
                 return meldScore;
             } else {// Add 1s and 5s if unused
